@@ -1,0 +1,180 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  sls-movie-api
+  Sample SAM Template for serverless-api
+  
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+
+Parameters:
+  DatabaseUsername:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /DatabaseUsername # add to systems manager
+  DatabaseHost:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /DatabaseHost # add to systems manager
+  DatabaseName:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /DatabaseName # add to systems manager
+  AppTimezone:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /AppTimezone # add to systems manager
+
+Resources:
+  CreateMovieFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src
+      Handler: functions/movie.createHandler
+      Runtime: nodejs18.x
+      Environment: # environment variables, should be added in the systems manager
+        Variables:
+          DB_USERNAME: !Ref DatabaseUsername
+          DB_HOST: !Ref DatabaseHost
+          DB_NAME: !Ref DatabaseName
+          APP_TIMEZONE: !Ref AppTimezone
+      Architectures:
+        - x86_64
+      Events:
+        CreateMovieEvent:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /movies
+            Method: post
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints: 
+          - functions/movie.ts
+
+  UpdateMovieFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src # here is the code location
+      Handler: functions/movie.updateHandler
+      Runtime: nodejs18.x
+      Environment: # environment variables, should be added in the systems manager
+        Variables:
+          DB_USERNAME: !Ref DatabaseUsername
+          DB_HOST: !Ref DatabaseHost
+          DB_NAME: !Ref DatabaseName
+          APP_TIMEZONE: !Ref AppTimezone
+      Architectures:
+        - x86_64
+      Events:
+        UpdateMovieEvent:
+          Type: Api
+          Properties:
+            Path: /movies/{id}
+            Method: put
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        EntryPoints:
+          - functions/movie.ts
+
+  GetAllMoviesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src # here is the code location
+      Handler: functions/movie.indexHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          DB_USERNAME: !Ref DatabaseUsername
+          DB_HOST: !Ref DatabaseHost
+          DB_NAME: !Ref DatabaseName
+          APP_TIMEZONE: !Ref AppTimezone
+      Events:
+        GetAllMoviesEvent:
+          Type: Api
+          Properties:
+            Path: /movies
+            Method: get
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        EntryPoints:
+          - functions/movie.ts
+
+  GetMovieFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src # here is the code location
+      Handler: functions/movie.getHandler
+      Runtime: nodejs18.x
+      Environment: # environment variables, should be added in the systems manager
+        Variables:
+          DB_USERNAME: !Ref DatabaseUsername
+          DB_HOST: !Ref DatabaseHost
+          DB_NAME: !Ref DatabaseName
+          APP_TIMEZONE: !Ref AppTimezone
+      Architectures:
+        - x86_64
+      Events:
+        GetMovieEvent:
+          Type: Api
+          Properties:
+            Path: /movies/{id}
+            Method: get
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        EntryPoints:
+          - functions/movie.ts
+
+  DeleteMovieFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src # here is the code location
+      Handler: functions/movie.deleteHandler
+      Runtime: nodejs18.x
+      Environment: # environment variables, should be added in the systems manager
+        Variables:
+          DB_USERNAME: !Ref DatabaseUsername
+          DB_HOST: !Ref DatabaseHost
+          DB_NAME: !Ref DatabaseName
+          APP_TIMEZONE: !Ref AppTimezone
+      Architectures:
+        - x86_64
+      Events:
+        SmsApiEvent:
+          Type: Api
+          Properties:
+            Path: /movies/{id}
+            Method: delete
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        EntryPoints:
+          - functions/movie.ts
+
+# Outputs:
+#   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+#   # Find out more about other implicit resources you can reference within SAM
+#   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+#   HelloWorldApi:
+#     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+#     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+#   HelloWorldFunction:
+#     Description: "Hello World Lambda Function ARN"
+#     Value: !GetAtt HelloWorldFunction.Arn
+#   HelloWorldFunctionIamRole:
+#     Description: "Implicit IAM Role created for Hello World function"
+#     Value: !GetAtt HelloWorldFunctionRole.Arn
