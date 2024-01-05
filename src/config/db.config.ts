@@ -1,5 +1,5 @@
 import { PoolOptions } from 'mysql2';
-import config from '../utils/config';
+import config from './config';
 import mysql from 'mysql2/promise';
 
 const access: PoolOptions = {

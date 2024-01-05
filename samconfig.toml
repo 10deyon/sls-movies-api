@@ -17,6 +17,10 @@ lint = true
 capabilities = "CAPABILITY_IAM"
 confirm_changeset = true
 resolve_s3 = true
+s3_prefix = "sls-movie-api"
+region = "us-east-1"
+parameter_overrides = "DatabaseUsername=\"/DatabaseUsername\" DatabaseHost=\"/DatabaseHost\" DatabaseName=\"/DatabaseName\" DatabasePort=\"/DatabasePort\" AppTimezone=\"/AppTimezone\""
+image_repositories = []
 
 [default.package.parameters]
 resolve_s3 = true

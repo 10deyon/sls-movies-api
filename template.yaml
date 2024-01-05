@@ -4,7 +4,6 @@ Description: >
   sls-movie-api
   Sample SAM Template for serverless-api
   
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 3
@@ -19,6 +18,9 @@ Parameters:
   DatabaseName:
     Type: AWS::SSM::Parameter::Value<String>
     Default: /DatabaseName # add to systems manager
+  DatabasePort:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /DatabasePort # add to systems manager
   AppTimezone:
     Type: AWS::SSM::Parameter::Value<String>
     Default: /AppTimezone # add to systems manager
@@ -35,6 +37,7 @@ Resources:
           DB_USERNAME: !Ref DatabaseUsername
           DB_HOST: !Ref DatabaseHost
           DB_NAME: !Ref DatabaseName
+          DB_PORT: !Ref DatabasePort
           APP_TIMEZONE: !Ref AppTimezone
       Architectures:
         - x86_64
@@ -63,6 +66,7 @@ Resources:
         Variables:
           DB_USERNAME: !Ref DatabaseUsername
           DB_HOST: !Ref DatabaseHost
+          DB_PORT: !Ref DatabasePort
           DB_NAME: !Ref DatabaseName
           APP_TIMEZONE: !Ref AppTimezone
       Architectures:
@@ -93,6 +97,7 @@ Resources:
         Variables:
           DB_USERNAME: !Ref DatabaseUsername
           DB_HOST: !Ref DatabaseHost
+          DB_PORT: !Ref DatabasePort
           DB_NAME: !Ref DatabaseName
           APP_TIMEZONE: !Ref AppTimezone
       Events:
@@ -119,6 +124,7 @@ Resources:
         Variables:
           DB_USERNAME: !Ref DatabaseUsername
           DB_HOST: !Ref DatabaseHost
+          DB_PORT: !Ref DatabasePort
           DB_NAME: !Ref DatabaseName
           APP_TIMEZONE: !Ref AppTimezone
       Architectures:
@@ -147,6 +153,7 @@ Resources:
         Variables:
           DB_USERNAME: !Ref DatabaseUsername
           DB_HOST: !Ref DatabaseHost
+          DB_PORT: !Ref DatabasePort
           DB_NAME: !Ref DatabaseName
           APP_TIMEZONE: !Ref AppTimezone
       Architectures:
@@ -165,16 +172,48 @@ Resources:
         EntryPoints:
           - functions/movie.ts
 
-# Outputs:
-#   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-#   # Find out more about other implicit resources you can reference within SAM
-#   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-#   HelloWorldApi:
-#     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-#     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-#   HelloWorldFunction:
-#     Description: "Hello World Lambda Function ARN"
-#     Value: !GetAtt HelloWorldFunction.Arn
-#   HelloWorldFunctionIamRole:
-#     Description: "Implicit IAM Role created for Hello World function"
-#     Value: !GetAtt HelloWorldFunctionRole.Arn
+  HealthFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src
+      Handler: functions/serviceHealth.handler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      Events:
+        HealthApiEvent:
+          Type: Api
+          Properties:
+            Path: /health
+            Method: get
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: es2020
+        EntryPoints:
+          - functions/serviceHealth.ts
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  CreateMovieApi:
+    Description: "API Gateway endpoint URL for Prod stage for Create Movie function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/movies"
+  CreateMovieFunction:
+    Description: "Create Movie Lambda Function ARN"
+    Value: !GetAtt CreateMovieFunction.Arn
+  CreateMovieFunctionIamRole:
+    Description: "Implicit IAM Role created for Create Movie function"
+    Value: !GetAtt CreateMovieFunction.Arn
+
+  HealthApi:
+    Description: API Gateway endpoint URL for HealthFunction
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/health"
+  HealthFunction:
+    Description: "Service Health Lambda Function ARN"
+    Value: !GetAtt HealthFunction.Arn
+  HealthFunctionIamRole:
+    Description: "Implicit IAM Role created for Health function"
+    Value: !GetAtt HealthFunction.Arn

@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import AppError from '../utils/AppError';
+import AppError from '../classes/AppError';
 import { CreateMovie, UpdateMovie } from '../interfaces/MovieInterface';
 
 const createMovieDTO = async (payload: CreateMovie) => {
