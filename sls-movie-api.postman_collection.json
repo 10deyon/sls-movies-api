@@ -1,0 +1,534 @@
+{
+	"info": {
+		"_postman_id": "9323eb19-b074-40ed-9995-87b8c13abac2",
+		"name": "sls-movie-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3903375"
+	},
+	"item": [
+		{
+			"name": "GET ALL",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/movies?page=1&limit=2",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"movies"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GET ALL",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/movies?page=1&limit=2",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"movies"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/3.0.1 Python/3.8.13"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jan 2024 01:04:35 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "248"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Records Fetched Successfully\",\n    \"data\": {\n        \"currentPage\": 1,\n        \"limit\": 2,\n        \"totalItems\": 1,\n        \"pages\": 1,\n        \"hasNext\": false,\n        \"hasPrevious\": false,\n        \"items\": [\n            {\n                \"id\": 1,\n                \"title\": \"Shrek\",\n                \"producer\": \"Warner\",\n                \"created_at\": \"2024-01-05T02:03:29.000Z\"\n            }\n        ]\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "CREATE",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Dracula\",\n    \"producer\": \"Mr. Smith\",\n    \"release_date\": \"2023-10-01\"\n}"
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/movies",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"movies"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "CREATE",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Shrek\",\n    \"producer\": \"Warner\",\n    \"release_date\": \"2023-10-01\"\n}"
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/movies",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"movies"
+							]
+						}
+					},
+					"status": "CREATED",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/3.0.1 Python/3.8.13"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jan 2024 01:03:29 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "175"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Movie Created Successfully\",\n    \"data\": {\n        \"title\": \"Shrek\",\n        \"producer\": \"Warner\",\n        \"release_date\": \"2023-10-01\",\n        \"created_at\": \"2024-01-05T02:03:29.000Z\",\n        \"id\": 1\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "UPDATE",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"producer\": \"Warner & Co.\",\n    \"release_date\": \"2013-10-31\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/movies/:id",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"movies",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "UPDATE",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"producer\": \"Warner & Co.\",\n    \"release_date\": \"2013-10-31\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/movies/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"movies",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/3.0.1 Python/3.8.13"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jan 2024 01:05:51 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "188"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Movie record updated successfully\",\n    \"data\": {\n        \"id\": 1,\n        \"title\": \"Shrek\",\n        \"producer\": \"Warner & Co.\",\n        \"created_at\": \"2024-01-05T02:03:29.000Z\",\n        \"release_date\": \"2013-10-31\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "DELETE",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/movies/:id",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"movies",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "DELETE",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/movies/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"movies",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "NO CONTENT",
+					"code": 204,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/3.0.1 Python/3.8.13"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 03 Jan 2024 21:12:35 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "GET ONE",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/movies/:id",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"movies",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "NOT FOUND",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/movies/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"movies",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "21"
+								}
+							]
+						}
+					},
+					"status": "BAD REQUEST",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/3.0.1 Python/3.8.13"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 03 Jan 2024 20:50:17 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "57"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"Movie record does not exist\"\n}"
+				},
+				{
+					"name": "GET ONE",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/movies/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"movies",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/3.0.1 Python/3.8.13"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jan 2024 01:04:10 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "190"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Record Fetched Successfully\",\n    \"data\": {\n        \"id\": 1,\n        \"title\": \"Shrek\",\n        \"producer\": \"Warner\",\n        \"release_date\": \"2023-10-01T00:00:00.000Z\",\n        \"created_at\": \"2024-01-05T02:03:29.000Z\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "SERVICE HEALTH",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}",
+					"host": [
+						"{{BASE_URL}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "SERVICE HEALTH",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/health",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Server",
+							"value": "Werkzeug/3.0.1 Python/3.8.13"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 05 Jan 2024 01:06:06 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "55"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Movie service is active...\"\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://127.0.0.1:3000",
+			"type": "string"
+		}
+	]
+}
