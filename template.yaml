@@ -43,10 +43,10 @@ Resources:
         - x86_64
       Events:
         CreateMovieEvent:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Type: Api
           Properties:
             Path: /movies
-            Method: post
+            Method: POST
     Metadata: # Manage esbuild properties
       BuildMethod: esbuild
       BuildProperties:
@@ -59,10 +59,10 @@ Resources:
   UpdateMovieFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src # here is the code location
+      CodeUri: src
       Handler: functions/movie.updateHandler
       Runtime: nodejs18.x
-      Environment: # environment variables, should be added in the systems manager
+      Environment:
         Variables:
           DB_USERNAME: !Ref DatabaseUsername
           DB_HOST: !Ref DatabaseHost
@@ -88,7 +88,7 @@ Resources:
   GetAllMoviesFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src # here is the code location
+      CodeUri: src
       Handler: functions/movie.indexHandler
       Runtime: nodejs18.x
       Architectures:
@@ -117,10 +117,10 @@ Resources:
   GetMovieFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src # here is the code location
+      CodeUri: src
       Handler: functions/movie.getHandler
       Runtime: nodejs18.x
-      Environment: # environment variables, should be added in the systems manager
+      Environment:
         Variables:
           DB_USERNAME: !Ref DatabaseUsername
           DB_HOST: !Ref DatabaseHost
@@ -146,10 +146,10 @@ Resources:
   DeleteMovieFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: src # here is the code location
+      CodeUri: src
       Handler: functions/movie.deleteHandler
       Runtime: nodejs18.x
-      Environment: # environment variables, should be added in the systems manager
+      Environment:
         Variables:
           DB_USERNAME: !Ref DatabaseUsername
           DB_HOST: !Ref DatabaseHost
@@ -195,25 +195,30 @@ Resources:
           - functions/serviceHealth.ts
 
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  CreateMovieApi:
-    Description: "API Gateway endpoint URL for Prod stage for Create Movie function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/movies"
-  CreateMovieFunction:
-    Description: "Create Movie Lambda Function ARN"
-    Value: !GetAtt CreateMovieFunction.Arn
-  CreateMovieFunctionIamRole:
-    Description: "Implicit IAM Role created for Create Movie function"
-    Value: !GetAtt CreateMovieFunction.Arn
+  WebEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
 
-  HealthApi:
-    Description: API Gateway endpoint URL for HealthFunction
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/health"
-  HealthFunction:
-    Description: "Service Health Lambda Function ARN"
-    Value: !GetAtt HealthFunction.Arn
-  HealthFunctionIamRole:
-    Description: "Implicit IAM Role created for Health function"
-    Value: !GetAtt HealthFunction.Arn
+# Outputs:
+#   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+#   # Find out more about other implicit resources you can reference within SAM
+#   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+#   CreateMovieApi:
+#     Description: "API Gateway endpoint URL for Prod stage for Create Movie function"
+#     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/movies"
+#   CreateMovieFunction:
+#     Description: "Create Movie Lambda Function ARN"
+#     Value: !GetAtt CreateMovieFunction.Arn
+#   CreateMovieFunctionIamRole:
+#     Description: "Implicit IAM Role created for Create Movie function"
+#     Value: !GetAtt CreateMovieFunction.Arn
+
+#   HealthApi:
+#     Description: API Gateway endpoint URL for HealthFunction
+#     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/health"
+#   HealthFunction:
+#     Description: "Service Health Lambda Function ARN"
+#     Value: !GetAtt HealthFunction.Arn
+#   HealthFunctionIamRole:
+#     Description: "Implicit IAM Role created for Health function"
+#     Value: !GetAtt HealthFunction.Arn
