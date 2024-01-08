@@ -6,8 +6,16 @@ import MovieServiceInstance from '../services/movie.service';
 import { CreateMovie, UpdateMovie } from '../interfaces/MovieInterface';
 import movieValidation from '../dto/movie.dto';
 
+/**
+ * Route handler function for fetching paginated movie records.
+ *
+ * @param {APIGatewayProxyEvent} event - The incoming API Gateway event.
+ *
+ * @returns {Promise<APIGatewayProxyResult>} A Promise representing the API Gateway proxy result.
+ */
 export const indexHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
+        // Extract page and limit parameters from the query string
         const page: string = event.queryStringParameters?.page as string;
         const limit: string = event.queryStringParameters?.limit as string;
 
@@ -33,11 +41,20 @@ export const indexHandler = async (event: APIGatewayProxyEvent): Promise<APIGate
     }
 };
 
+/**
+ * Route handler function for creating a new movie.
+ *
+ * @param {APIGatewayProxyEvent} event - The incoming API Gateway event.
+ *
+ * @returns {Promise<APIGatewayProxyResult>} A Promise representing the API Gateway proxy result.
+ */
 export const createHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-    const eventBody: string = event.body as string;
-    const requestBody: CreateMovie = JSON.parse(eventBody);
-
     try {
+        // Extract the request body from the event
+        const eventBody: string = event.body as string;
+        const requestBody: CreateMovie = JSON.parse(eventBody);
+
+        // Validate the incoming data using the createMovieDTO method
         const validData = await movieValidation.createMovieDTO(requestBody);
         const movie = await MovieServiceInstance.create(validData);
 
@@ -62,13 +79,21 @@ export const createHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
     }
 };
 
+/**
+ * Route handler function for updating a movie record.
+ *
+ * @param {APIGatewayProxyEvent} event - The incoming API Gateway event.
+ *
+ * @returns {Promise<APIGatewayProxyResult>} A Promise representing the API Gateway proxy result.
+ */
 export const updateHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
+        // Extract the movie ID from the path parameters
         const movieId: string = event.pathParameters?.id as string;
-
         const eventBody: string = event.body as string;
         const requestBody: UpdateMovie = JSON.parse(eventBody);
 
+        // Validate the incoming data using the updateMovieDTO method
         const validData = await movieValidation.updateMovieDTO(requestBody);
 
         const movie = await MovieServiceInstance.update(validData, movieId);
@@ -90,8 +115,16 @@ export const updateHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
     }
 };
 
+/**
+ * Route handler function for fetching details of a specific movie.
+ *
+ * @param {APIGatewayProxyEvent} event - The incoming API Gateway event.
+ *
+ * @returns {Promise<APIGatewayProxyResult>} A Promise representing the API Gateway proxy result.
+ */
 export const getHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
+        // Extract the movie ID from the path parameters
         const movieId: string = event.pathParameters?.id as string;
 
         const movie = await MovieServiceInstance.getOne(
@@ -116,8 +149,16 @@ export const getHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewa
     }
 };
 
+/**
+ * Route handler function for deleting a movie record.
+ *
+ * @param {APIGatewayProxyEvent} event - The incoming API Gateway event.
+ *
+ * @returns {Promise<APIGatewayProxyResult>} A Promise representing the API Gateway proxy result.
+ */
 export const deleteHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     try {
+        // Extract the movie ID from the path parameters
         const movieId: string = event.pathParameters?.id as string;
 
         await MovieServiceInstance.delete(movieId);

@@ -29,7 +29,7 @@ Resources:
   CreateMovieFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: src
+      CodeUri: src # the entry point of your application
       Handler: functions/movie.createHandler
       Runtime: nodejs18.x
       Environment: # environment variables, should be added in the systems manager
@@ -41,7 +41,7 @@ Resources:
           APP_TIMEZONE: !Ref AppTimezone
       Architectures:
         - x86_64
-      Events:
+      Events: # think of this as the route for your route handler
         CreateMovieEvent:
           Type: Api
           Properties:
